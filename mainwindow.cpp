@@ -21,6 +21,7 @@ void MainWindow::setupMainMenu() {
     bestResultLabel = new QLabel("Лучший результат: Не установлено", this);
     startButton = new QPushButton("Начать игру", this);
 
+
     layout->addWidget(welcomeLabel);
     layout->addWidget(bestResultLabel);
     layout->addWidget(startButton);
