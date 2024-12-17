@@ -56,3 +56,34 @@ void MainWindow::startGame() {
     updateBoard();
 }
 
+void MainWindow::setupGameField() {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            tiles[i][j] = new QPushButton("", this);
+            tiles[i][j]->setFixedSize(80, 80);
+            connect(tiles[i][j], &QPushButton::clicked, this, &MainWindow::tileClicked);
+            gridLayout->addWidget(tiles[i][j], i, j);
+        }
+    }
+}
+
+void MainWindow::shuffleBoard() {
+    srand(time(nullptr));
+    int numbers[16];
+    for (int i = 0; i < 15; ++i) numbers[i] = i + 1;
+    numbers[15] = 0;
+
+    std::random_shuffle(&numbers[0], &numbers[16]);
+
+    int index = 0;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            gameBoard[i][j] = numbers[index++];
+            if (gameBoard[i][j] == 0) {
+                emptyRow = i;
+                emptyCol = j;
+            }
+        }
+    }
+}
+
