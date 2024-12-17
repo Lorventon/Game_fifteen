@@ -98,7 +98,6 @@ void MainWindow::shuffleBoard() {
         }
     }
 }
-}
 
 void MainWindow::updateBoard() {
     for (int i = 0; i < 4; ++i) {
@@ -111,4 +110,25 @@ void MainWindow::updateBoard() {
         }
     }
 }
+
+void MainWindow::tileClicked() {
+    QPushButton *clickedButton = qobject_cast<QPushButton *>(sender());
+    int row, col;
+
+    // Найдём нажатую кнопку
+    for (row = 0; row < 4; ++row)
+        for (col = 0; col < 4; ++col)
+            if (tiles[row][col] == clickedButton)
+                goto found;
+
+found:
+    if ((abs(row - emptyRow) == 1 && col == emptyCol) || (abs(col - emptyCol) == 1 && row == emptyRow)) {
+        std::swap(gameBoard[row][col], gameBoard[emptyRow][emptyCol]);
+        emptyRow = row;
+        emptyCol = col;
+        updateBoard();
+        checkVictory();
+    }
+}
+
 
