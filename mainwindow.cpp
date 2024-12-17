@@ -131,4 +131,29 @@ found:
     }
 }
 
+void MainWindow::updateTimer() {
+    elapsedTime++;
+    timerLabel->setText(QString("Время: %1 сек").arg(elapsedTime));
+}
+
+void MainWindow::checkVictory() {
+    int value = 1;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            if (i == 3 && j == 3) break; // Последняя клетка
+            if (gameBoard[i][j] != value++) return;
+        }
+    }
+
+    timer->stop();
+    QMessageBox::information(this, "Победа!", QString("Вы победили за %1 секунд!").arg(elapsedTime));
+
+    if (elapsedTime < bestTime) {
+        bestTime = elapsedTime;
+        saveBestResult();
+    }
+
+    centralWidget->deleteLater();
+    setupMainMenu();
+}
 
