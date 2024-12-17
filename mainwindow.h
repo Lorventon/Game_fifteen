@@ -39,7 +39,7 @@ private:
     QTimer *timer;
     int elapsedTime;
 
-
+    // Результаты
     QSettings *settings;
     int bestTime;
 
