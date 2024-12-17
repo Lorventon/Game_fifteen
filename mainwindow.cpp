@@ -32,4 +32,27 @@ void MainWindow::setupMainMenu() {
         bestResultLabel->setText(QString("Лучший результат: %1 сек").arg(bestTime));
 }
 
+void MainWindow::startGame() {
+    // Удаляем старое окно
+    centralWidget->deleteLater();
+
+    // Создаём игровое поле
+    gameWidget = new QWidget(this);
+    setCentralWidget(gameWidget);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout(gameWidget);
+    timerLabel = new QLabel("Время: 0 сек", this);
+    mainLayout->addWidget(timerLabel);
+
+    gridLayout = new QGridLayout();
+    mainLayout->addLayout(gridLayout);
+
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateTimer);
+    timer->start(1000);
+
+    setupGameField();
+    shuffleBoard();
+    updateBoard();
+}
 
