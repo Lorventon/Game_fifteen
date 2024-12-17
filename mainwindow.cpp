@@ -157,3 +157,10 @@ void MainWindow::checkVictory() {
     setupMainMenu();
 }
 
+void MainWindow::loadBestResult() {
+    bestTime = settings->value("bestTime", INT_MAX).toInt();
+}
+
+void MainWindow::saveBestResult() {
+    settings->setValue("bestTime", bestTime);
+}
