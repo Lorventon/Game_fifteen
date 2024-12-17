@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <cstdlib>
 #include <ctime>
+#include <random>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), elapsedTime(0), bestTime(INT_MAX) {
     settings = new QSettings("MyCompany", "FifteenPuzzle", this);
@@ -68,13 +69,24 @@ void MainWindow::setupGameField() {
 }
 
 void MainWindow::shuffleBoard() {
-    srand(time(nullptr));
-    int numbers[16];
-    for (int i = 0; i < 15; ++i) numbers[i] = i + 1;
+    // Инициализация генератора случайных чисел
+    srand(static_cast<unsigned int>(time(nullptr)));
+    std::vector<int> numbers(16);
+
+    // Заполнение массива числами от 1 до 15 и 0
+    for (int i = 0; i < 15; ++i) {
+        numbers[i] = i + 1;
+    }
     numbers[15] = 0;
 
-    std::random_shuffle(&numbers[0], &numbers[16]);
+    // Создаем генератор случайных чисел
+    std::random_device rd;
+    std::mt19937 g(rd());    // Инициализация генератора
 
+    // Перемешиваем числа с использованием shuffle
+    std::shuffle(numbers.begin(), numbers.end(), g);
+
+    // Заполняем игровую доску
     int index = 0;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
@@ -82,6 +94,19 @@ void MainWindow::shuffleBoard() {
             if (gameBoard[i][j] == 0) {
                 emptyRow = i;
                 emptyCol = j;
+            }
+        }
+    }
+}
+}
+
+void MainWindow::updateBoard() {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            if (gameBoard[i][j] == 0) {
+                tiles[i][j]->setText("");
+            } else {
+                tiles[i][j]->setText(QString::number(gameBoard[i][j]));
             }
         }
     }
